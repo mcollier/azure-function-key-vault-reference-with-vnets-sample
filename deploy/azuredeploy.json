@@ -34,18 +34,6 @@
                 "description": "The name of the function app that you wish to create."
             }
         },
-        "storageAccountType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_RAGRS"
-            ],
-            "metadata": {
-                "description": "Storage Account type"
-            }
-        },
         "vnetName": {
             "type": "string",
             "metadata": {
@@ -198,9 +186,10 @@
             "location": "[parameters('location')]",
             "name": "[variables('storageAccountName')]",
             "sku": {
-                "name": "[parameters('storageAccountType')]"
+                "name": "Standard_LRS",
+                "tier": "Standard"
             },
-            "kind": "Storage"
+            "kind": "StorageV2"
         },
         {
             "type": "Microsoft.Insights/components",
@@ -283,10 +272,6 @@
                             "value":"1"
                         },
                         {
-                            "name":"WEBSITE_RUN_FROM_PACKAGE",
-                            "value":"1"
-                        },
-                        {
                             "name":"WEBSITE_DNS_SERVER",
                             "value":"168.63.129.16"
                         }
@@ -327,7 +312,6 @@
                 "FUNCTIONS_WORKER_RUNTIME": "[parameters('functionWorkerRuntime')]",
                 "WEBSITE_NODE_DEFAULT_VERSION": "~12",
                 "WEBSITE_VNET_ROUTE_ALL": "1",
-                "WEBSITE_RUN_FROM_PACKAGE": "1",
                 "WEBSITE_DNS_SERVER":"168.63.129.16",
                 "MySecret": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets',variables('keyVaultName'),'keyVaultSecret1')).secretUri, ')')]"
             }
