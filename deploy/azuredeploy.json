@@ -224,7 +224,8 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', variables('keyVaultPrivateEndpointName'), 'default')]"
             ],
             "kind": "functionapp",
             "identity": {
@@ -322,7 +323,6 @@
             "apiVersion": "2019-09-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
             ],
             "properties": {
                 "enableRbacAuthorization": false,
@@ -332,15 +332,7 @@
                 "enabledForDiskEncryption": false,
                 "softDeleteRetentionInDays": 14,
                 "tenantId": "[subscription().tenantId]",
-                "accessPolicies": [
-                    {
-                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('functionAppName')), '2019-08-01', 'Full').identity.principalId]",
-                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('functionAppName')), '2019-08-01', 'Full').identity.tenantId]",
-                        "permissions": {
-                            "secrets": [ "get" ]
-                        }
-                    }
-                ],
+                "accessPolicies": [],
                 "sku": {
                     "name": "Standard",
                     "family": "A"
@@ -349,6 +341,26 @@
                     "defaultAction": "Deny",
                     "bypass": "AzureServices"
                 }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/accessPolicies",
+            "name": "[concat(variables('keyVaultName'), '/add')]",
+            "apiVersion": "2019-09-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+                "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+            ],
+            "properties": {
+                "accessPolicies": [
+                    {
+                        "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('functionAppName')), '2019-08-01', 'Full').identity.principalId]",
+                        "tenantId": "[reference(resourceId('Microsoft.Web/sites', variables('functionAppName')), '2019-08-01', 'Full').identity.tenantId]",
+                        "permissions": {
+                            "secrets": [ "get" ]
+                        }
+                    }
+                ]
             }
         },
         {
