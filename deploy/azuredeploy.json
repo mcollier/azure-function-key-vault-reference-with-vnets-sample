@@ -257,20 +257,16 @@
                             "value":"[variables('functionAppName')]"
                         },
                         {
+                            "name":"WEBSITE_VNET_ROUTE_ALL",
+                            "value":"1"
+                        },
+                        {
                             "name":"FUNCTIONS_EXTENSION_VERSION",
                             "value":"~3"
                         },
                         {
                             "name":"FUNCTIONS_WORKER_RUNTIME",
                             "value":"[parameters('functionWorkerRuntime')]"
-                        },
-                        {
-                            "name":"WEBSITE_NODE_DEFAULT_VERSION",
-                            "value":"~12"
-                        },
-                        {
-                            "name":"WEBSITE_VNET_ROUTE_ALL",
-                            "value":"1"
                         },
                         {
                             "name":"WEBSITE_DNS_SERVER",
@@ -311,9 +307,8 @@
                 "WEBSITE_CONTENTSHARE":"[variables('functionAppName')]",
                 "FUNCTIONS_EXTENSION_VERSION": "~3",
                 "FUNCTIONS_WORKER_RUNTIME": "[parameters('functionWorkerRuntime')]",
-                "WEBSITE_NODE_DEFAULT_VERSION": "~12",
-                "WEBSITE_VNET_ROUTE_ALL": "1",
                 "WEBSITE_DNS_SERVER":"168.63.129.16",
+                "WEBSITE_VNET_ROUTE_ALL":"1",
                 "MySecret": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets',variables('keyVaultName'),'keyVaultSecret1')).secretUri, ')')]"
             }
         },
