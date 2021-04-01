@@ -20,4 +20,4 @@ This sample shows
    1. Browse to the SCM site's /DebugConsole endpoint (e.g., [https://contoso.scm.azurewebsites.net/DebugConsole](https://contoso.scm.azurewebsites.net/DebugConsole))
    1. Scale UP the Azure Functions Premium plan size.
    1. Deploy code (not reliable for me)
-1. After the Key Vault references have been successfully resolved, _then_ deploy the application code.
+1. Deploy the application code.
