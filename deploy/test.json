@@ -1,0 +1,73 @@
+{
+    "$schema": "https: //schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appName": {
+            "type": "string",
+            "defaultValue": "webapp-vnetrouteall-enabled-config-only",
+            "metadata": {
+                "description": "The name of the app to create."
+            }
+        },
+        "appServicePlanName": {
+            "type": "string",
+            "defaultValue": "asp-privatelink-test-ase",
+            "metadata": {
+                "description": "The name of the app service plan to create."
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "australiaeast",
+            "metadata": {
+                "description": "The location in which all resources should be deployed."
+            }
+        }
+    },
+    "variables": {
+        "vnetName": "mcolliervnet",
+        "subnetName": "funcsubnet"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-09-01",
+            "name": "[parameters('appName')]",
+            "location": "[parameters('location')]",
+            "kind": "app",
+            "dependsOn": [],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverFarms', parameters('appServicePlanName'))]",
+                "siteConfig": {
+                    "windowsFxVersion": "DOTNETCORE|3.1"
+                }
+            },
+            "resources": [
+                {
+                    "name": "virtualNetwork",
+                    "type": "config",
+                    "apiVersion": "2020-09-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
+                    ],
+                    "properties": {
+                        "subnetResourceId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]",
+                        "swiftSupported": true,
+                        "vnetRouteAllEnabled": true
+                    }
+                },
+                {
+                    "name": "web",
+                    "type": "config",
+                    "apiVersion": "2020-09-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
+                    ],
+                    "properties": {
+                        "vnetRouteAllEnabled": true
+                    }
+                }
+            ]
+        }
+    ]
+}
