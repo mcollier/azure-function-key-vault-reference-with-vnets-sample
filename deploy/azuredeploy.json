@@ -257,10 +257,6 @@
                             "name": "WEBSITE_DNS_SERVER",
                             "value": "168.63.129.16"
                         },
-                        // {
-                        //     "name": "WEBSITE_VNET_ROUTE_ALL",
-                        //     "value": "1"
-                        // },
                         {
                             "name": "WEBSITE_CONTENTOVERVNET",
                             "value": "1"
@@ -318,7 +314,6 @@
                 "FUNCTIONS_EXTENSION_VERSION": "~3",
                 "FUNCTIONS_WORKER_RUNTIME": "[parameters('functionWorkerRuntime')]",
                 "WEBSITE_DNS_SERVER": "168.63.129.16",
-                // "WEBSITE_VNET_ROUTE_ALL": "1",
                 "WEBSITE_CONTENTOVERVNET": "1",
                 "WEBSITE_SKIP_CONTENTSHARE_VALIDATION": "1",
                 "MySecret": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets',variables('keyVaultName'),'keyVaultSecret1')).secretUri, ')')]"
